@@ -2,6 +2,11 @@ name: Frontend CI
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'starter/frontend/**'
   pull_request:
     branches:
       - main
@@ -35,4 +40,6 @@ jobs:
         npm ci
 
     - name: Run linting
-      run: npm run lint
+      run: |
+        cd starter/frontend
+        npm run lint
