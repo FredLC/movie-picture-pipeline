@@ -1,0 +1,24 @@
+name: Setup Node.js Environment
+description: Caches and installs dependencies for Node.js
+
+runs:
+  using: "composite"
+  steps:
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+
+    - name: Cache Node Modules
+      uses: actions/cache@v4
+      with:
+        path: starter/frontend/node_modules
+        key: ${{ runner.os }}-node-${{ hashFiles('starter/frontend/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
+    - name: Install Dependencies
+      run: |
+        cd starter/frontend
+        npm ci
+      shell: bash
