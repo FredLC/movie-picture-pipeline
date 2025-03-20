@@ -1,0 +1,16 @@
+name: Setup Backend
+description: Caches and installs backend dependencies
+
+runs:
+  using: composite
+  steps:
+    - name: Cache pipenv dependencies
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('starter/backend/Pipfile.lock') }}
+
+    - name: Install dependencies
+      run: |
+        cd starter/backend
+        pipenv install

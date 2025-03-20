@@ -1,0 +1,60 @@
+name: Backend Continuous Integration
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'starter/backend/**'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        uses: ./.github/actions/setup-backend
+
+      - name: Run linting
+        run: |
+          cd starter/backend
+          pipenv run lint
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        uses: ./.github/actions/setup-backend
+
+      - name: Run tests
+        run: |
+          cd starter/backend
+          pipenv run test
+
+  build:
+    needs: [lint, test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        uses: ./.github/actions/setup-backend
+
+      - name: Docker build
+        run: |
+          cd starter/backend
+          docker build -t mp-backend:latest .
+
+      - name: Run Docker container
+        run: |
+          docker run -p 5000:5000 --name mp-backend -d mp-backend

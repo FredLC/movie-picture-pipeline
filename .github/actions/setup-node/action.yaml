@@ -2,7 +2,7 @@ name: Setup Node.js Environment
 description: Caches and installs dependencies for Node.js
 
 runs:
-  using: "composite"
+  using: composite
   steps:
     - name: Use Node.js
       uses: actions/setup-node@v4
