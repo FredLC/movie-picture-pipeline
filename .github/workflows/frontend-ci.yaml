@@ -55,17 +55,8 @@ jobs:
     - name: Install dependencies
       uses: ./.github/actions/setup-node
 
-    - name: Build and Cache Docker Image
-      uses: docker/build-push-action@v5
-      with:
-        context: starter/frontend
-        push: false
-        tags: mp-frontend:latest
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
-        build-args: |
-            REACT_APP_MOVIE_API_URL=http://localhost:5000
-
-    - name: Run Docker Container
+    - name: Docker build and run
       run: |
+        cd starter/frontend
+        docker build --build-arg=REACT_APP_MOVIE_API_URL=http://localhost:5000 --tag=mp-frontend:latest .
         docker run --name mp-frontend -p 3000:3000 -d mp-frontend
