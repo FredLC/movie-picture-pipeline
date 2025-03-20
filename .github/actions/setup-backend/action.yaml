@@ -14,3 +14,4 @@ runs:
       run: |
         cd starter/backend
         pipenv install
+      shell: bash
