@@ -4,10 +4,13 @@ description: Caches and installs backend dependencies
 runs:
   using: composite
   steps:
-    - uses: actions/setup-python@v5
+    - name: Setup Python 3.10
+      uses: actions/setup-python@v5
       with:
         python-version: '3.10'
         # cache: pipenv
+    - name: Install pipenv
+      run: pip install pipenv
     # - name: Cache pipenv dependencies
     #   uses: actions/cache@v4
     #   with:
